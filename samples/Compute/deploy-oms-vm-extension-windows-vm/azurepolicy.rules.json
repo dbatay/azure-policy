@@ -43,6 +43,7 @@
                   "parameters":{
                      "vmName":{
                         "type":"string"
+                        "defaultValue":"vm1-update-test"
                      },
                      "location":{
                         "type":"string",
@@ -50,6 +51,7 @@
                      },
                      "logAnalytics":{
                         "type":"string"
+                        "defaultValue": "log-project1-logs-anjali1-c3b14"
                      }
                   },
                   "resources":[
