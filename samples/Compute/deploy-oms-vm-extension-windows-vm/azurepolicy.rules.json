@@ -42,7 +42,7 @@
                   "contentVersion":"1.0.0.0",
                   "parameters":{
                      "vmName":{
-                        "type":"string"
+                        "type":"string",
                         "defaultValue":"vm1-update-test"
                      },
                      "location":{
@@ -50,7 +50,7 @@
                         "defaultValue":"[resourceGroup().location]"
                      },
                      "logAnalytics":{
-                        "type":"string"
+                        "type":"string",
                         "defaultValue": "log-project1-logs-anjali1-c3b14"
                      }
                   },
