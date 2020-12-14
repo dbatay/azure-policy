@@ -1,92 +1,93 @@
 {
-   "if": {
-      "allOf": [
+   "if":{
+      "allOf":[
          {
-            "field": "type",
-            "equals": "Microsoft.Compute/virtualMachines"
+            "field":"type",
+            "equals":"Microsoft.Compute/virtualMachines"
          },
          {
-            "field": "Microsoft.Compute/imagePublisher",
-            "equals": "MicrosoftWindowsServer"
+            "field":"Microsoft.Compute/imagePublisher",
+            "equals":"MicrosoftWindowsServer"
          },
          {
-            "field": "Microsoft.Compute/imageOffer",
-            "equals": "WindowsServer"
+            "field":"Microsoft.Compute/imageOffer",
+            "equals":"WindowsServer"
          }
       ]
    },
-   "then": {
-      "effect": "deployIfNotExists",
-      "details": {
-         "type": "Microsoft.Compute/virtualMachines/extensions",
-         "existenceCondition": {
-            "allOf": [
+   "then":{
+      "effect":"deployIfNotExists",
+      "details":{
+         "type":"Microsoft.Compute/virtualMachines/extensions",
+         "existenceCondition":{
+            "allOf":[
                {
-                  "field": "Microsoft.Compute/virtualMachines/extensions/type",
-                  "equals": "MicrosoftMonitoringAgent"
+                  "field":"Microsoft.Compute/virtualMachines/extensions/type",
+                  "equals":"MicrosoftMonitoringAgent"
                },
                {
-                  "field": "Microsoft.Compute/virtualMachines/extensions/publisher",
-                  "equals": "Microsoft.EnterpriseCloud.Monitoring"
+                  "field":"Microsoft.Compute/virtualMachines/extensions/publisher",
+                  "equals":"Microsoft.EnterpriseCloud.Monitoring"
                }
             ]
          },
-         "roleDefinitionIds": [
+         "roleDefinitionIds":[
             "/providers/Microsoft.Authorization/roleDefinitions/8e3af657-a8ff-443c-a75c-2fe8c4bcb635"
          ],
-         "deployment": {
-            "properties": {
-               "mode": "incremental",
-               "template": {
-                  "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
-                  "contentVersion": "1.0.0.0",
-                  "parameters": {
-                     "vmName": {
-                        "type": "string"
+         "deployment":{
+            "properties":{
+               "mode":"incremental",
+               "template":{
+                  "$schema":"http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+                  "contentVersion":"1.0.0.0",
+                  "parameters":{
+                     "vmName":{
+                        "type":"string"
                      },
-                     "location": {
-                        "type": "string"
+                     "location":{
+                        "type":"string",
+                        "defaultValue":"[resourceGroup().location]"
                      },
-                     "logAnalytics": {
-                        "type": "string"
+                     "logAnalytics":{
+                        "type":"string"
                      }
                   },
-                  "resources": [
+                  "resources":[
                      {
-                        "name": "[concat(parameters('vmName'),'/omsPolicy')]",
-                        "type": "Microsoft.Compute/virtualMachines/extensions",
-                        "location": "[parameters('location')]",
-                        "apiVersion": "2017-12-01",
-                        "properties": {
-                           "publisher": "Microsoft.EnterpriseCloud.Monitoring",
-                           "type": "MicrosoftMonitoringAgent",
-                           "typeHandlerVersion": "1.0",
-                           "autoUpgradeMinorVersion": true,
-                           "settings": {
-                              "workspaceId": "[reference(parameters('logAnalytics'), '2015-03-20').customerId]"
+                        "name":"[concat(parameters('vmName'),'/omsPolicy')]",
+                        "type":"Microsoft.Compute/virtualMachines/extensions",
+                        "location":"[parameters('location')]",
+                        "apiVersion":"2017-12-01",
+                        "properties":{
+                           "publisher":"Microsoft.EnterpriseCloud.Monitoring",
+                           "type":"MicrosoftMonitoringAgent",
+                           "typeHandlerVersion":"1.0",
+                           "autoUpgradeMinorVersion":true,
+                           "settings":{
+                              "workspaceId":"[reference(parameters('logAnalytics'), '2015-03-20').customerId]"
                            },
-                           "protectedSettings": {
-                              "workspaceKey": "[listKeys(parameters('logAnalytics'), '2015-03-20').primarySharedKey]"
+                           "protectedSettings":{
+                              "workspaceKey":"[listKeys(parameters('logAnalytics'), '2015-03-20').primarySharedKey]"
                            }
                         }
                      }
                   ],
-                  "outputs": {
-                     "policy": {
-                        "type": "string",
-                        "value": "[concat('Enabled monitoring for Windows VM', ': ', parameters('vmName'))]"
+                  "outputs":{
+                     "policy":{
+                        "type":"string",
+                        "value":"[concat('Enabled monitoring for Windows VM', ': ', parameters('vmName'))]"
                      }
                   }
                },
-               "parameters": {
-                  "vmName": {
-                     "value": "[field('name')]"
+               "parameters":{
+                  "vmName":{
+                     "value":"[field('name')]"
                   },
-                  "location": {
-                     "value": "[field('location')]"
+                  "location":{
+                     "value":"[field('location')]"
                   },
-                  "logAnalytics": {
-                     "value": "[parameters('logAnalytics')]"
+                  "logAnalytics":{
+                     "value":"[parameters('logAnalytics')]"
                   }
                }
             }
